@@ -6,7 +6,11 @@ This project implements the beginnings of an API for a (fictional) small shopkee
 ### Getting the inventory
 `GET api/inventory` will provide a list of currently available items.
 
-`POST api/purchase/<itemId>` will request purchase of the given item. This API call must be called by an authenticated user.
+`POST api/purchase/<itemId>` will request purchase of the given item. This API call must be called by an authenticated user. It will return a status code depending on the outcome of the purchase attempt as follows:  
+0 - Item Successfully Purchased  
+1 - Item Out of Stock  
+2 - Payment Failed  
+3 - Item Not Found  
 
 Items have the following properties:  
 `int ItemId`  
