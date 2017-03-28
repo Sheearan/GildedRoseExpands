@@ -20,6 +20,7 @@ namespace GildedRoseExpands.Controllers
             inventoryService = inventory;
         }
 
+        // GET api/inventory
         public IEnumerable<Item> Get()
         {
             return inventoryService.GetCurrentInventory();
