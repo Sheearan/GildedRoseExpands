@@ -17,7 +17,8 @@ namespace GildedRoseExpands.Tests.Controllers
         {
             // Arrange
             InventoryServiceMock inventory = new InventoryServiceMock();
-            PurchaseController controller = new PurchaseController(inventory);
+            PaymentServiceMock payment = new PaymentServiceMock(true);
+            PurchaseController controller = new PurchaseController(inventory, payment);
             int beginningQuantity = inventory.GetItemQuantity(IN_STOCK_ITEM);
 
             // Act
@@ -35,13 +36,33 @@ namespace GildedRoseExpands.Tests.Controllers
         {
             // Arrange
             InventoryServiceMock inventory = new InventoryServiceMock();
-            PurchaseController controller = new PurchaseController(inventory);
+            PaymentServiceMock payment = new PaymentServiceMock(true);
+            PurchaseController controller = new PurchaseController(inventory, payment);
 
             // Act
             PurchaseResults result = controller.Post(OUT_OF_STOCK_ITEM);
 
             // Assert
-            Assert.AreEqual(result, PurchaseResults.OutOfStock, "Item should have been successfully purchased.");
+            Assert.AreEqual(result, PurchaseResults.OutOfStock, "API should have reported out of stock item.");
+        }
+
+        [TestMethod]
+        public void FailedPaymentMethodDoesNotDecreaseQuantity()
+        {
+            // Arrange
+            InventoryServiceMock inventory = new InventoryServiceMock();
+            PaymentServiceMock payment = new PaymentServiceMock(false);
+            PurchaseController controller = new PurchaseController(inventory, payment);
+            int beginningQuantity = inventory.GetItemQuantity(IN_STOCK_ITEM);
+
+            // Act
+            PurchaseResults result = controller.Post(IN_STOCK_ITEM);
+
+            // Assert
+            int expectedValue = beginningQuantity - 1;
+            int actualValue = inventory.GetItemQuantity(IN_STOCK_ITEM);
+            Assert.AreEqual(result, PurchaseResults.PaymentFailed, "API should have reported payment failure.");
+            Assert.AreEqual(beginningQuantity, actualValue, string.Format("Expected {0} of item {1} instead of {2}. Failed payment should not affect the quantity.", expectedValue, IN_STOCK_ITEM, actualValue));
         }
     }
 }

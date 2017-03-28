@@ -9,15 +9,18 @@ namespace GildedRoseExpands.Controllers
     public class PurchaseController : ApiController
     {
         private IInventoryService inventoryService;
+        private IPaymentService paymentService;
 
         public PurchaseController()
         {
             inventoryService = new InventoryService();
+            paymentService = new PaymentService();
         }
 
-        public PurchaseController(IInventoryService inventory)
+        public PurchaseController(IInventoryService inventory, IPaymentService payment)
         {
             inventoryService = inventory;
+            paymentService = payment;
         }
 
         // POST api/purchase/42
@@ -27,12 +30,24 @@ namespace GildedRoseExpands.Controllers
 
             if (purchasedItem.Quantity > 0)
             {
+                return AttemptPurchase(id, purchasedItem);
+            }
+            else
+            {
+                return PurchaseResults.OutOfStock;
+            }
+        }
+
+        private PurchaseResults AttemptPurchase(int id, Item purchasedItem)
+        {
+            if (paymentService.processPayment())
+            {
                 inventoryService.SetQuantity(id, purchasedItem.Quantity - 1);
                 return PurchaseResults.ItemPurchased;
             }
             else
             {
-                return PurchaseResults.OutOfStock;
+                return PurchaseResults.PaymentFailed;
             }
         }
     }
