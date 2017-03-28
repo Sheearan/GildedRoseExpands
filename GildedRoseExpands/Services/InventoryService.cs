@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using GildedRoseExpands.Interfaces;
 using GildedRoseExpands.Models;
 
