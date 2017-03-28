@@ -21,10 +21,19 @@ namespace GildedRoseExpands.Controllers
         }
 
         // POST api/purchase/42
-        public void Post(int id)
+        public PurchaseResults Post(int id)
         {
             Item purchasedItem = inventoryService.GetItem(id);
-            inventoryService.SetQuantity(id, purchasedItem.Quantity - 1);
+
+            if (purchasedItem.Quantity > 0)
+            {
+                inventoryService.SetQuantity(id, purchasedItem.Quantity - 1);
+                return PurchaseResults.ItemPurchased;
+            }
+            else
+            {
+                return PurchaseResults.OutOfStock;
+            }
         }
     }
 }

@@ -215,6 +215,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ItemModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PurchaseResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
