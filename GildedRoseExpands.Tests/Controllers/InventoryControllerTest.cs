@@ -29,10 +29,7 @@ namespace GildedRoseExpands.Tests.Controllers
         public void PopulatedInventoryReturnsSameItems()
         {
             // Arrange
-            Item tunic = new Item { Name = "Fine Tunic", Description = "A sleeveless, knee-length garment.", Price = 49.95M };
-            Item banana = new Item { Name = "Fine Banana", Description = "A curved, yellow fruit.", Price = 1.95M };
-            InventoryServiceMock mockInventory = new InventoryServiceMock(new List<Item> { tunic, banana});
-            InventoryController controller = new InventoryController(mockInventory);
+            InventoryController controller = new InventoryController(new InventoryServiceMock());
 
             // Act
             IEnumerable<Item> result = controller.Get();
