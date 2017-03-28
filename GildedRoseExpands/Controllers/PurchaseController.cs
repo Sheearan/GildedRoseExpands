@@ -28,9 +28,19 @@ namespace GildedRoseExpands.Controllers
         {
             Item purchasedItem = inventoryService.GetItem(id);
 
+            if (purchasedItem != null)
+            {
+                return AttemptPurchase(purchasedItem);
+            }
+
+            return PurchaseResults.ItemNotFound;
+        }
+
+        private PurchaseResults AttemptPurchase(Item purchasedItem)
+        {
             if (purchasedItem.Quantity > 0)
             {
-                return AttemptPurchase(id, purchasedItem);
+                return PurchaseItem(purchasedItem);
             }
             else
             {
@@ -38,11 +48,11 @@ namespace GildedRoseExpands.Controllers
             }
         }
 
-        private PurchaseResults AttemptPurchase(int id, Item purchasedItem)
+        private PurchaseResults PurchaseItem(Item purchasedItem)
         {
             if (paymentService.processPayment())
             {
-                inventoryService.SetQuantity(id, purchasedItem.Quantity - 1);
+                inventoryService.SetQuantity(purchasedItem.ItemId, purchasedItem.Quantity - 1);
                 return PurchaseResults.ItemPurchased;
             }
             else

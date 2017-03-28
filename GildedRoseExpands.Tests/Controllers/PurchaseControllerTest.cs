@@ -11,6 +11,7 @@ namespace GildedRoseExpands.Tests.Controllers
     {
         private const int IN_STOCK_ITEM = 1;
         private const int OUT_OF_STOCK_ITEM = 2;
+        private const int NONEXISTENT_ITEM = 314;
 
         [TestMethod]
         public void PurchasingInStockItemDecreasesQuantity()
@@ -63,6 +64,21 @@ namespace GildedRoseExpands.Tests.Controllers
             int actualValue = inventory.GetItemQuantity(IN_STOCK_ITEM);
             Assert.AreEqual(result, PurchaseResults.PaymentFailed, "API should have reported payment failure.");
             Assert.AreEqual(beginningQuantity, actualValue, string.Format("Expected {0} of item {1} instead of {2}. Failed payment should not affect the quantity.", expectedValue, IN_STOCK_ITEM, actualValue));
+        }
+
+        [TestMethod]
+        public void NonexistentItemIdReturnsItemNotFound()
+        {
+            // Arrange
+            InventoryServiceMock inventory = new InventoryServiceMock();
+            PaymentServiceMock payment = new PaymentServiceMock(true);
+            PurchaseController controller = new PurchaseController(inventory, payment);
+
+            // Act
+            PurchaseResults result = controller.Post(NONEXISTENT_ITEM);
+
+            // Assert
+            Assert.AreEqual(result, PurchaseResults.ItemNotFound, "API should have reported item not found.");
         }
     }
 }
