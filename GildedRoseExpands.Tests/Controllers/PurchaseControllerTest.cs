@@ -63,7 +63,7 @@ namespace GildedRoseExpands.Tests.Controllers
             PurchaseResults result = controller.Post(OUT_OF_STOCK_ITEM);
 
             // Assert
-            Assert.AreEqual(result, PurchaseResults.OutOfStock, "API should have reported out of stock item.");
+            Assert.AreEqual(PurchaseResults.OutOfStock, result, "API should have reported out of stock item.");
         }
 
         [TestMethod]
@@ -82,7 +82,7 @@ namespace GildedRoseExpands.Tests.Controllers
             // Assert
             int expectedValue = beginningQuantity - 1;
             int actualValue = inventory.GetItemQuantity(IN_STOCK_ITEM);
-            Assert.AreEqual(result, PurchaseResults.PaymentFailed, "API should have reported payment failure.");
+            Assert.AreEqual(PurchaseResults.PaymentFailed, result, "API should have reported payment failure.");
             Assert.AreEqual(beginningQuantity, actualValue, string.Format("Expected {0} of item {1} instead of {2}. Failed payment should not affect the quantity.", expectedValue, IN_STOCK_ITEM, actualValue));
         }
 
@@ -99,7 +99,7 @@ namespace GildedRoseExpands.Tests.Controllers
             PurchaseResults result = controller.Post(NONEXISTENT_ITEM);
 
             // Assert
-            Assert.AreEqual(result, PurchaseResults.ItemNotFound, "API should have reported item not found.");
+            Assert.AreEqual(PurchaseResults.ItemNotFound, result, "API should have reported item not found.");
         }
     }
 }
