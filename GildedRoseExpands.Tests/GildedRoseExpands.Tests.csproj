@@ -95,8 +95,10 @@
   <ItemGroup>
     <Compile Include="Controllers\InventoryControllerTest.cs" />
     <Compile Include="Controllers\PurchaseControllerTest.cs" />
+    <Compile Include="Helpers\PurchaseMockCollection.cs" />
     <Compile Include="Integration\IntegrationTests.cs" />
     <Compile Include="Mocks\InventoryServiceMock.cs" />
+    <Compile Include="Mocks\LoggingServiceMock.cs" />
     <Compile Include="Mocks\PaymentServiceMock.cs" />
     <Compile Include="Mocks\ShippingServiceMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

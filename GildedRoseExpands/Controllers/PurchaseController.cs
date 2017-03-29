@@ -11,19 +11,22 @@ namespace GildedRoseExpands.Controllers
         private IInventoryService inventoryService;
         private IPaymentService paymentService;
         private IShippingService shippingService;
+        private ILoggingService loggingService;
 
         public PurchaseController()
         {
             inventoryService = new InventoryService();
             paymentService = new PaymentService();
             shippingService = new ShippingService();
+            loggingService = new LoggingService();
         }
 
-        public PurchaseController(IInventoryService inventory, IPaymentService payment, IShippingService shipping)
+        public PurchaseController(IInventoryService inventory, IPaymentService payment, IShippingService shipping, ILoggingService logging)
         {
             inventoryService = inventory;
             paymentService = payment;
             shippingService = shipping;
+            loggingService = logging;
         }
 
         // POST api/purchase/42
@@ -36,6 +39,7 @@ namespace GildedRoseExpands.Controllers
                 return AttemptPurchase(purchasedItem);
             }
 
+            loggingService.logString(string.Format("{0} attempted to purchase item {1}, which doesn't exist.", User.Identity.Name, id));
             return PurchaseResults.ItemNotFound;
         }
 
@@ -47,6 +51,7 @@ namespace GildedRoseExpands.Controllers
             }
             else
             {
+                loggingService.logString(string.Format("{0} attempted to purchase item {1}, which is out of stock.", User.Identity.Name, purchasedItem.ItemId));
                 return PurchaseResults.OutOfStock;
             }
         }
@@ -57,10 +62,13 @@ namespace GildedRoseExpands.Controllers
             {
                 shippingService.shipItem(purchasedItem.ItemId, User.Identity.Name);
                 inventoryService.SetQuantity(purchasedItem.ItemId, purchasedItem.Quantity - 1);
+
+                loggingService.logString(string.Format("Item {0} purchased by {1}.", purchasedItem.ItemId, User.Identity.Name));
                 return PurchaseResults.ItemPurchased;
             }
             else
             {
+                loggingService.logString(string.Format("{0} attempted to purchase item {1}, but payment failed.", User.Identity.Name, purchasedItem.ItemId));
                 return PurchaseResults.PaymentFailed;
             }
         }

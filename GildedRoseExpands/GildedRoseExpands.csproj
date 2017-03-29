@@ -211,6 +211,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IInventoryService.cs" />
+    <Compile Include="Interfaces\ILoggingService.cs" />
     <Compile Include="Interfaces\IPaymentService.cs" />
     <Compile Include="Interfaces\IShippingService.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\ShippingService.cs" />
